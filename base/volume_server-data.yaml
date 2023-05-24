@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: csgo-server-data-rw
+  namespace: prism-servers
+spec:
+  storageClassName: s3-csgo-server-data
+  capacity:
+    storage: 300Gi
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: csgo-server-data-pvc
+    namespace: prism-servers
+  csi:
+    driver: ru.yandex.s3.csi
+    controllerPublishSecretRef:
+      name: csi-s3-secret
+      namespace: kube-system
+    nodePublishSecretRef:
+      name: csi-s3-secret
+      namespace: kube-system
+    nodeStageSecretRef:
+      name: csi-s3-secret
+      namespace: kube-system
+    volumeAttributes:
+      capacity: 300Gi
+      mounter: geesefs
+    volumeHandle: manualbucket/path
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csgo-server-data-pvc
+  namespace: prism-servers
+spec:
+  # Empty storage class disables dynamic provisioning
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 35Gi
