@@ -15,5 +15,5 @@ parameters:
   csi.storage.k8s.io/node-publish-secret-name: csi-s3-secret
   options: '--memory-limit 1000 --dir-mode 0777 --file-mode 0666'
   csi.storage.k8s.io/node-stage-secret-namespace: kube-system
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: Immediate
